@@ -30,21 +30,45 @@ def simple_calculator(operation: str, num1: float, num2: float) -> float:
     elif operation == "multiply":
         return num1 * num2
     elif operation == "divide":
-        if num2 != 0:
-            return num1 / num2
-        else:
-            raise ValueError("Cannot divide by zero.")
-    else:
-        raise ValueError("Invalid operation. Please choose from 'add', 'subtract', 'multiply', or 'divide'.")
+        return num1 / num2
 
+def request_sanitized_number(prompt: str) -> float:
+    while True:
+        try:
+            number = float(input(prompt))
+            return number
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+
+def request_valid_operation(prompt: str) -> str:
+    while True:
+        try:
+            operation = input(prompt).strip().lower()
+            if operation != "add" and operation != "subtract" and operation != "multiply" and operation != "divide":
+                raise ValueError
+            return operation
+        except ValueError:
+            print("Invalid operation. Please choose from 'add', 'subtract', 'multiply', or 'divide'.")
+
+def request_nonzero_number(operation: str, prompt: str) -> float:
+    while True:
+        try:
+            number = request_sanitized_number(prompt)
+            if operation == "divide" and number == 0.0:
+                raise ValueError
+            return number
+        except ValueError:
+            print("Cannot divide by zero. Please enter a nonzero number.")
+    
 def main():
     
     print(f"===== Simple Calculator =====")
 
     # Ask the user for sample input    
-    num1 = float(input("Enter the first number: "))
-    num2 = float(input("Enter the second number: "))
-    operation = input("Enter the operation (add, subtract, multiply, divide): ").strip().lower()
+    num1 = request_sanitized_number("Enter the first number: ")
+    operation = request_valid_operation("Enter the operation (add, subtract, multiply, divide): ")
+    num2 = request_nonzero_number(operation, "Enter the second number: ")
+
 
     # Perform the calculation and display the result
     result = simple_calculator(operation, num1, num2)
