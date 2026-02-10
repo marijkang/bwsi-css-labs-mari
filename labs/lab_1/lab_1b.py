@@ -30,7 +30,12 @@ def simple_calculator(operation: str, num1: float, num2: float) -> float:
     elif operation == "multiply":
         return num1 * num2
     elif operation == "divide":
-        return num1 / num2
+        if num2 != 0:
+            return num1 / num2
+        else:
+            raise ValueError("Cannot divide by zero.")
+    else:
+        raise ValueError("Invalid operation. Please choose from 'add', 'subtract', 'multiply', or 'divide'.")
 
 def request_sanitized_number(prompt: str) -> float:
     while True:
@@ -58,7 +63,7 @@ def request_nonzero_number(operation: str, prompt: str) -> float:
                 raise ValueError
             return number
         except ValueError:
-            print("Cannot divide by zero. Please enter a nonzero number.")
+            print("Please enter a nonzero number.")
     
 def main():
     
